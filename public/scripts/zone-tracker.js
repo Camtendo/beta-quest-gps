@@ -282,11 +282,18 @@ function buildZoneInputs(zones) {
         });
 
         newSelect.on('select2:select', function(e) {
-            setDestination(currentNodeId, $(this).data('zoneid'), e.params.data.id);
+            var newDestinaton = e.params.data.id;
+            setDestination(currentNodeId, $(this).data('zoneid'), newDestinaton);
+
+            // Auto navigate to new section
+            $('.current-location-select').val(newDestinaton).trigger('change');
+            currentNodeId = newDestinaton;
+            $('.zone-target').empty();
+            var node = getNode(mapState, currentNodeId);
+            buildZoneInputs(node.zones);
         });
     });
 }
-
 
 var currentNodeId = null;
 
