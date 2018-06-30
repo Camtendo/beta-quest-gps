@@ -1,0 +1,23 @@
+{
+  "name": "beta-quest-gps",
+  "version": "1.0.0",
+  "description": "OoT Beta Quest tracker",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Camtendo/beta-quest-gps.git"
+  },
+  "author": "Camtendo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Camtendo/beta-quest-gps/issues"
+  },
+  "homepage": "https://github.com/Camtendo/beta-quest-gps#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
