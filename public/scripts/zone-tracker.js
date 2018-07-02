@@ -470,7 +470,7 @@ var mapState = [
   generateNode(allKeys.morpha, [
 	  createZone(allKeys.warp, allKeys.lake),
   ]),
-  generateNode(allKeys.bomgo, [
+  generateNode(allKeys.bongo, [
 	  createZone(allKeys.warp, allKeys.grave),
   ]),
   generateNode(allKeys.twinrova, [
@@ -489,17 +489,17 @@ var mapState = [
   ]),
 ];
 
-console.log(mapState);
-
 function buildZoneInputs(zones) {
   var $zoneTarget = $('.zone-target');
 
   zones.forEach((z, index) => {
     // Multiple by 10 so that select2 doesn't change the current-location select by accident
     // Dumb AF
+    var zoneContainer = $('<div class="zone-container col-sm-3"></div>');
     var zoneLabel = $(`<label for=${index*10}>${z.id}</div>`);
     var newSelect = $(`<select id=${index*10} data-zoneId=${z.id} class="zone-select ${z.id}"></select>`);
-    $zoneTarget.append(zoneLabel, newSelect);
+    zoneContainer.append(zoneLabel, newSelect);
+    $zoneTarget.append(zoneContainer);
     newSelect.select2({
       data: generateZoneSelectData(z),
       tags: true,
@@ -543,5 +543,19 @@ $(document).ready(function () {
     $('.zone-target').empty();
     var node = getNode(mapState, currentNodeId);
     buildZoneInputs(node.zones);
+  });
+
+  var $pathStartSelect = $('.path-finder-start');
+  $pathStartSelect.select2({
+    data: generateCurrentLocationSelectData(mapState),
+    placeholder: "Select a location",
+    width: '100%'
+  });
+
+  var $pathEndSelect = $('.path-finder-end');
+  $pathEndSelect.select2({
+    data: generateCurrentLocationSelectData(mapState),
+    placeholder: "Select a location",
+    width: '100%'
   });
 });

@@ -2,15 +2,37 @@
     Beta Quest GPS
 </h1>
 
-<h3>Current Location</h3>
-<select class="current-location-select">
-    <option></option>
-</select>
+<div class="section-container">
+    <h3>Current Location</h3>
+    <select class="current-location-select">
+        <option></option>
+    </select>
+</div>
 
-<h3>Zones</h3>
-<div class="zone-target"></div>
+<div class="section-container">
+    <h3>Path Finder</h3>
+    <label for="start">Starting Point</label>
+    <select class="path-finder-start" name="start" id="start">
+        <option></option>
+    </select>
+
+    <label for="end">Destination</label>
+    <select class="path-finder-end" name="end" id="end">
+        <option></option>
+    </select>
+
+    <button class="btn btn-primary">Calculate</button>
+</div>
+
+<div class="section-container">
+    <h3 class="zone-title">Zones</h3>
+    <div class="zone-target row"></div>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="/scripts/zone-tracker.js"></script>
+<link href="/styles/main.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
