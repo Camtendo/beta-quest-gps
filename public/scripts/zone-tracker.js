@@ -186,11 +186,11 @@ var mapState = [
   generateNode(allKeys.kak, [
     createZone('shop_left'),
     createZone('shop_right'),
-    createZone('house_talon'),
+    createZone('House: Talon'),
     createZone(allKeys.grave),
-    createZone('house_impa'),
-    createZone('house_skulltula'),
-    createZone('windmill'),
+    createZone('House: Impa'),
+    createZone('House: Skulltulla'),
+    createZone('Windmill'),
     createZone(generateGrottoName('Redead')),
     createZone(generateGrottoName('Potion')),
     createZone('cowjail'),
@@ -201,12 +201,12 @@ var mapState = [
     createZone(allKeys.botw),
   ]),
   generateNode(allKeys.kok, [
-    createZone('shop'),
-    createZone('house_link'),
-    createZone('house_saria'),
-    createZone('house_mido'),
-    createZone('house_twins'),
-    createZone('house_know_it_all'),
+    createZone('Shop'),
+    createZone('House: Link'),
+    createZone('House: Saria'),
+    createZone('House: Mido'),
+    createZone('House: Twins'),
+    createZone('House: Know it all Bros'),
     createZone(allKeys.lw),
     createZone(allKeys.field),
     createZone(generateGrottoName(allKeys.kok)),
@@ -257,7 +257,7 @@ var mapState = [
     createZone(allKeys.zd),
     createZone(allKeys.field),
     createZone(allKeys.water),
-    createZone('lab'),
+    createZone('Laboratory'),
     createZone(allKeys.grave),
   ]),
   generateNode(allKeys.gc, [
@@ -270,7 +270,7 @@ var mapState = [
   generateNode(allKeys.lw, [
     createZone(allKeys.gc),
     createZone(allKeys.kok),
-    createZone('stage'),
+    createZone('Forest Stage Grotto'),
     createZone(allKeys.sfm),
     createZone(allKeys.zr),
     createZone(generateGrottoName(allKeys.gc)),
@@ -287,7 +287,7 @@ var mapState = [
   ]),
   generateNode(allKeys.tot, [
     createZone(allKeys.market),
-	  createZone('master_sword'),
+	  createZone('Master Sword'),
   ]),
   generateNode(allKeys.castle_front, [
     createZone(allKeys.market),
@@ -309,7 +309,7 @@ var mapState = [
   generateNode(allKeys.col, [
     createZone(allKeys.spirit),
     createZone(allKeys.hw),
-    createZone('naryu'),
+    createZone('Nayru'),
     createZone(generateGrottoName(allKeys.col)),
     createZone('mirror_shield'),
     createZone(requirements.silvergauntlets),
@@ -353,7 +353,7 @@ var mapState = [
   generateNode(allKeys.zf, [
     createZone(allKeys.zd),
     createZone(allKeys.ic),
-    createZone('farore'),
+    createZone('Farore'),
     createZone(allKeys.jabu),
   ]),
   generateNode(allKeys.zd, [
@@ -448,7 +448,7 @@ var mapState = [
   generateNode(allKeys.spirit, [
     createZone(allKeys.twinrova),
     createZone(allKeys.col),
-    createZone('col_silver'),
+    createZone('col_silver_gauntlets'),
 	  createZone('col_mirror'),
   ]),
   generateNode(allKeys.ic, [
