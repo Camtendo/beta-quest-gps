@@ -155,8 +155,8 @@ function setDestination(nodeId, zoneId, destination) {
 var mapState = [
   generateNode(allKeys.field, [
     createZone(allKeys.market),
-    createZone('zr_land'),
-    createZone('zr_water'),
+    createZone(`${allKeys.zr} via land`),
+    createZone(`${allKeys.zr} via water`),
     createZone(allKeys.kak),
     createZone(allKeys.lake),
     createZone(allKeys.kok),
@@ -173,15 +173,15 @@ var mapState = [
   ]),
   generateNode(allKeys.market, [
     createZone(allKeys.bridge),
-    createZone('alley_left'),
-    createZone('bombchu'),
-    createZone('alley_right'),
-    createZone('mask'),
-    createZone('shop_potion'),
-    createZone('bazaar'),
+    createZone('Alley Left'),
+    createZone('Bombchu Bowling'),
+    createZone('Alley Right'),
+    createZone('Happy Mask Shop'),
+    createZone('Potion Shop'),
+    createZone('Bazaar'),
     createZone(allKeys.castle_front),
     createZone(allKeys.tot),
-    createZone('treasure_game')
+    createZone('Treasure Game')
   ]),
   generateNode(allKeys.kak, [
     createZone('shop_left'),
@@ -505,6 +505,10 @@ var mapState = [
 
 function buildZoneInputs(zones) {
   var $zoneTarget = $('.zone-target');
+
+ zones.sort((a, b) => {
+    return a.id.localeCompare(b.id);
+  });
 
   zones.forEach((z, index) => {
     // Multiple by 10 so that select2 doesn't change the current-location select by accident
