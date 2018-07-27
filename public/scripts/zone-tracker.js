@@ -488,10 +488,7 @@ var mapState = [
 	  createZone(allKeys.warp, allKeys.grave),
   ]),
   generateNode(allKeys.twinrova, [
-	  createZone(allKeys.warp, allKeys.sfm),
-  ]),
-  generateNode(allKeys.phantom, [
-	  createZone(allKeys.warp, allKeys.sfm),
+	  createZone(allKeys.warp, allKeys.col),
   ]),
   generateNode(allKeys.warp_songs, [
     createZone(allKeys.minuet),
@@ -520,24 +517,25 @@ function buildZoneInputs(zones) {
     $zoneTarget.append(zoneContainer);
     newSelect.select2({
       data: generateZoneSelectData(z),
-      tags: true,
+      tags: false,
       width: '100%',
       allowClear: true,
       tokenSeparators: [',', ' '],
-      insertTag: function (data, tag) {
-        // Insert the tag at the end of the results
-        data.push(tag);
-      }
     });
 
     newSelect.on('select2:select', function (e) {
-      var newDestinaton = e.params.data.id;
+      var newDestination = e.params.data.id;
       // ZoneId is the same as the label text
       var zoneId = $(`label[for=${this.id}]`).text();
-      setDestination(currentNodeId, zoneId, newDestinaton);
+      if (!Object.values(zoneKeys).includes(newDestination) || 
+          !getNode(mapState, newDestination)) {
+        return;
+      }
+
+      setDestination(currentNodeId, zoneId, newDestination);
       // Auto navigate to new section
-      $('.current-location-select').val(newDestinaton).trigger('change');
-      currentNodeId = newDestinaton;
+      $('.current-location-select').val(newDestination).trigger('change');
+      currentNodeId = newDestination;
       $('.zone-target').empty();
       var node = getNode(mapState, currentNodeId);
       buildZoneInputs(node.zones);
@@ -577,3 +575,11 @@ $(document).ready(function () {
     width: '100%'
   });
 });
+
+function writeMapState() {
+  console.log(mapState);
+}
+
+function loadMapState(newState) {
+  mapState = newState;
+}

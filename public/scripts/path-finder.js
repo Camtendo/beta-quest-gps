@@ -31,7 +31,7 @@ $('.path-finder-btn').click(() => {
 
 function resolvePathResult(response) {
     if (response == null) {
-        $('.path-finder-target').text('No path exists');
+        $('.path-finder-target').text(`No path exists from ${$('.path-finder-start').val() || 'EMPTY'} to ${$('.path-finder-end').val() || 'EMPTY'}`);
         return;
     }
     $('.path-finder-target').text(response.join(' => '));

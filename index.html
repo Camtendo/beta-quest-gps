@@ -3,28 +3,36 @@
 </h1>
 
 <div class="section-container">
-    <h3>Current Location</h3>
-    <select class="current-location-select">
-        <option></option>
-    </select>
-</div>
-
-<div class="section-container">
     <h3>Path Finder</h3>
-    <label for="start">Starting Point</label>
-    <select class="path-finder-start" name="start" id="start">
-        <option></option>
-    </select>
 
-    <label for="end">Destination</label>
-    <select class="path-finder-end" name="end" id="end">
-        <option></option>
-    </select>
+    <div class="row">
+        <div class="col-sm-6">
+                <label for="start">Starting Point</label>
+                <select class="path-finder-start" name="start" id="start">
+                    <option></option>
+                </select>
+            </div>
 
+    <div class="col-sm-6">
+            <label for="end">Destination</label>
+            <select class="path-finder-end" name="end" id="end">
+                <option></option>
+            </select>
+        </div>
+
+    </div>
+    
     <button class="btn btn-primary path-finder-btn">Calculate</button>
 
     <div class="path-finder-target"></div>
 </div>
+
+<div class="section-container">
+        <h3>Current Location</h3>
+        <select class="current-location-select">
+            <option></option>
+        </select>
+    </div>
 
 <div class="section-container">
     <h3 class="zone-title">Zones</h3>
