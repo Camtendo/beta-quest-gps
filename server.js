@@ -4,10 +4,12 @@ var path = require('path');
 var bodyParser = require('body-parser');
 const Graph = require('node-dijkstra');
 
+var port = process.env.PORT || 8080;
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-console.log('Starting Beta Quest GPS...');
+console.log(`Starting Beta Quest GPS on port ${port}...`);
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
@@ -25,4 +27,4 @@ console.log(computedPath);
 res.json(computedPath);
 });
 
-app.listen(5000);
+app.listen(port);
