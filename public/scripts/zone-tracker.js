@@ -137,12 +137,13 @@ function generateZoneSelectData(zone) {
     text: zone.destination
   };
 
-  return [firstOption].concat(Object.keys(zoneKeys).map(k => {
+  var zoneData = [firstOption].concat(Object.keys(zoneKeys).map(k => {
     return {
       id: zoneKeys[k],
       text: zoneKeys[k]
     }
   }));
+  return zoneData;
 }
 
 function setDestination(nodeId, zoneId, destination) {
@@ -503,10 +504,6 @@ var mapState = [
 function buildZoneInputs(zones) {
   var $zoneTarget = $('.zone-target');
 
- zones.sort((a, b) => {
-    return a.id.localeCompare(b.id);
-  });
-
   zones.forEach((z, index) => {
     // Multiple by 10 so that select2 doesn't change the current-location select by accident
     // Dumb AF
@@ -516,11 +513,15 @@ function buildZoneInputs(zones) {
     zoneContainer.append(zoneLabel, newSelect);
     $zoneTarget.append(zoneContainer);
     newSelect.select2({
+      placeholder: 'This is broken',
       data: generateZoneSelectData(z),
-      tags: true,
       width: '100%',
       allowClear: true,
       tokenSeparators: [',', ' '],
+      insertTag: function (data, tag) {
+        // Insert the tag at the end of the results
+        data.push(tag);
+      }
     });
 
     newSelect.on('select2:select', function (e) {
