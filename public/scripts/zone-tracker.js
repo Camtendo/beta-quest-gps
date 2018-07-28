@@ -517,7 +517,7 @@ function buildZoneInputs(zones) {
     $zoneTarget.append(zoneContainer);
     newSelect.select2({
       data: generateZoneSelectData(z),
-      tags: false,
+      tags: true,
       width: '100%',
       allowClear: true,
       tokenSeparators: [',', ' '],
