@@ -29,6 +29,7 @@ var areas = {
   zr: "Zora's River",
   castle: "Hyrule Castle Child",
   market: "Hyrule Market",
+  alley: "Hyrule Market Alley",
   tot: "Temple of Time",
   stage: 'Lost Woods Forest Stage',
   deku: "Deku Tree",
@@ -41,6 +42,9 @@ var areas = {
   spirit: "Spirit Temple",
   botw: "Bottom of the Well",
   ic: "Ice Cavern",
+  zelda: "Princess Zelda",
+  tot_between: "Between Temple of Time",
+  save: "Save Warp",
 };
 
 var warpSongs = {
@@ -126,21 +130,21 @@ function generateCurrentLocationSelectData(state) {
   return state.map(n => {
     return {
       id: n.id,
-      text: n.id
+      label: n.id
     };
   });
 }
 
 function generateZoneSelectData(zone) {
   var firstOption = {
-    id: 'initial',
-    text: zone.destination
+    id: zone.id,
+    label: zone.destination
   };
 
   var zoneData = [firstOption].concat(Object.keys(zoneKeys).map(k => {
     return {
       id: zoneKeys[k],
-      text: zoneKeys[k]
+      label: zoneKeys[k]
     }
   }));
   return zoneData;
@@ -259,7 +263,7 @@ var mapState = [
     createZone(allKeys.field),
     createZone(allKeys.water),
     createZone('Laboratory'),
-    createZone(allKeys.grave),
+    createZone('pull grave'),
   ]),
   generateNode(allKeys.gc, [
     createZone(allKeys.dmt),
@@ -300,11 +304,11 @@ var mapState = [
     createZone('Double Defense Fairy'),
   ]),
   generateNode(allKeys.castle, [
-    createZone('Princess Zelda'),
+    createZone(allKeys.zelda),
     createZone('caught'),
 	  createZone(allKeys.castle_front),
   ]),
-  generateNode('Princess Zelda', [
+  generateNode(allKeys.zelda, [
     createZone(allKeys.castle_front),
   ]),
   generateNode(allKeys.col, [
@@ -420,50 +424,62 @@ var mapState = [
   ]),
   generateNode(allKeys.deku, [
     createZone(allKeys.gohma),
-	  createZone(allKeys.kok),
+    createZone(allKeys.kok),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.dc, [
     createZone(allKeys.kd),
-	  createZone(allKeys.dmt),
+    createZone(allKeys.dmt),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.jabu, [
     createZone(allKeys.barinade),
-	  createZone(allKeys.zf),
+    createZone(allKeys.zf),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.forest, [
     createZone(allKeys.phantom),
-	  createZone(allKeys.sfm),
+    createZone(allKeys.sfm),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.fire, [
     createZone(allKeys.volvagia),
-	  createZone(allKeys.dmc),
+    createZone(allKeys.dmc),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.water, [
     createZone(allKeys.morpha),
-	  createZone(allKeys.lake),
+    createZone(allKeys.lake),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.shadow, [
     createZone(allKeys.bongo),
-	  createZone(allKeys.kak),
+    createZone(allKeys.kak),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.spirit, [
     createZone(allKeys.twinrova),
     createZone(allKeys.col),
     createZone('col_silver_gauntlets'),
-	  createZone('col_mirror'),
+    createZone('col_mirror'),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.ic, [
     createZone(allKeys.zf),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.botw, [
     createZone(allKeys.kak),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.gt, [
     createZone(allKeys.trial),
-	  createZone(allKeys.ganondorf),
+    createZone(allKeys.ganondorf),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.gtg, [
     createZone(allKeys.gf),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.gohma, [
     createZone(allKeys.deku),
@@ -505,41 +521,36 @@ function buildZoneInputs(zones) {
   var $zoneTarget = $('.zone-target');
 
   zones.forEach((z, index) => {
-    // Multiple by 10 so that select2 doesn't change the current-location select by accident
-    // Dumb AF
     var zoneContainer = $('<div class="zone-container col-sm-3"></div>');
     var zoneLabel = $(`<label for=${index*10}>${z.id}</div>`);
     var newSelect = $(`<select id=${index*10} data-zoneId=${z.id} class="zone-select ${z.id}"></select>`);
     zoneContainer.append(zoneLabel, newSelect);
     $zoneTarget.append(zoneContainer);
-    newSelect.select2({
-      placeholder: 'This is broken',
-      data: generateZoneSelectData(z),
-      width: '100%',
-      allowClear: true,
-      tokenSeparators: [',', ' '],
-      insertTag: function (data, tag) {
-        // Insert the tag at the end of the results
-        data.push(tag);
+    newSelect.selectize( {
+      valueField: 'id',
+      labelField: 'label',
+      searchField: 'label',
+      options: generateZoneSelectData(z),
+      zoneId: z.id,
+      placeholder: z.destination,
+      onChange: function (e) {
+        var newDestination = e;
+        // ZoneId is the same as the label text
+        var zoneId = this.settings.zoneId;
+        if (!Object.values(zoneKeys).includes(newDestination) || 
+            !getNode(mapState, newDestination)) {
+          return;
+        }
+  
+        setDestination(currentNodeId, zoneId, newDestination);
+        // Auto navigate to new section
+        var currentLocationSelect = $('.current-location-select')[0].selectize;
+        currentLocationSelect.setValue(newDestination);
+        currentNodeId = newDestination;
+        $('.zone-target').empty();
+        var node = getNode(mapState, currentNodeId);
+        buildZoneInputs(node.zones);
       }
-    });
-
-    newSelect.on('select2:select', function (e) {
-      var newDestination = e.params.data.id;
-      // ZoneId is the same as the label text
-      var zoneId = $(`label[for=${this.id}]`).text();
-      if (!Object.values(zoneKeys).includes(newDestination) || 
-          !getNode(mapState, newDestination)) {
-        return;
-      }
-
-      setDestination(currentNodeId, zoneId, newDestination);
-      // Auto navigate to new section
-      $('.current-location-select').val(newDestination).trigger('change');
-      currentNodeId = newDestination;
-      $('.zone-target').empty();
-      var node = getNode(mapState, currentNodeId);
-      buildZoneInputs(node.zones);
     });
   });
 }
@@ -548,32 +559,34 @@ var currentNodeId = null;
 
 $(document).ready(function () {
   var $currentSelect = $('.current-location-select');
-  $currentSelect.select2({
-    data: generateCurrentLocationSelectData(mapState),
-    placeholder: "Select a location",
-    width: '100%'
-  });
-
-  $currentSelect.on('select2:select', (e) => {
-    currentNodeId = e.params.data.id;
-    // Purge old stuff first
-    $('.zone-target').empty();
-    var node = getNode(mapState, currentNodeId);
-    buildZoneInputs(node.zones);
+  $currentSelect.selectize({
+    valueField: 'id',
+    labelField: 'label',
+    searchField: 'label',
+    options: generateCurrentLocationSelectData(mapState),
+    onChange: (id) => {
+      currentNodeId = id;
+      // Purge old stuff first
+      $('.zone-target').empty();
+      var node = getNode(mapState, currentNodeId);
+      buildZoneInputs(node.zones);
+    }
   });
 
   var $pathStartSelect = $('.path-finder-start');
-  $pathStartSelect.select2({
-    data: generateCurrentLocationSelectData(mapState),
-    placeholder: "Select a location",
-    width: '100%'
+  $pathStartSelect.selectize({
+    valueField: 'id',
+    labelField: 'label',
+    searchField: 'label',
+    options: generateCurrentLocationSelectData(mapState),
   });
 
   var $pathEndSelect = $('.path-finder-end');
-  $pathEndSelect.select2({
-    data: generateCurrentLocationSelectData(mapState),
-    placeholder: "Select a location",
-    width: '100%'
+  $pathEndSelect.selectize({
+    valueField: 'id',
+    labelField: 'label',
+    searchField: 'label',
+    options: generateCurrentLocationSelectData(mapState),
   });
 });
 
