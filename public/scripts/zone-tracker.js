@@ -1,6 +1,4 @@
 var areas = {
-  warp: 'Warp',
-  g_: 'Grotto',
   castle_front: "Castle (Guards or Ruins)",
   bridge: 'Hyrule Castle Bridge Area',
   dampe: "Dampe's Grave (And Windmill)",
@@ -32,6 +30,18 @@ var areas = {
   alley: "Hyrule Market Alley",
   tot: "Temple of Time",
   stage: 'Lost Woods Forest Stage',
+  zelda: "Princess Zelda",
+  tot_between: "Between Temple of Time",
+  
+};
+
+var miscAreas = {
+  warp: 'Warp',
+  g_: 'Grotto',
+  save: "Save Warp",
+}
+
+var dungeons = {
   deku: "Deku Tree",
   dc: "Dodongo's Cavern",
   jabu: "Jabu-Jabu's Belly",
@@ -42,10 +52,7 @@ var areas = {
   spirit: "Spirit Temple",
   botw: "Bottom of the Well",
   ic: "Ice Cavern",
-  zelda: "Princess Zelda",
-  tot_between: "Between Temple of Time",
-  save: "Save Warp",
-};
+}
 
 var warpSongs = {
   warp_songs: 'Warp Songs',
@@ -86,13 +93,47 @@ var requirements = {
   night: 'Nighttime'
 };
 
-var allKeys = { ...areas, ...warpSongs, ...bosses, ...requirements };
-var zoneKeys = { ...areas, ...warpSongs, ...bosses };
+var allKeys = { ...areas, ...miscAreas, ...warpSongs, ...bosses, ...dungeons, ...requirements };
+var zoneKeys = { ...areas, ...miscAreas, ...warpSongs, ...dungeons, ...bosses };
 
 console.log(allKeys);
 
 function generateGrottoName(key) {
   return `Grotto: ${key}`;
+}
+
+function getSelectGroup(str) {
+  if (Object.values(areas).includes(str)) {
+    return 'Areas';
+  }
+
+  if (Object.values(warpSongs).includes(str)) {
+    return 'Warp Songs';
+  }
+
+  if (Object.values(bosses).includes(str)) {
+    return 'Bosses';
+  }
+
+  if (Object.values(dungeons).includes(str)) {
+    return 'Dungeons';
+  }
+
+  if (Object.values(miscAreas).includes(str)) {
+    return 'Misc.';
+  }
+
+  if (Object.values(allKeys).includes(str)) {
+    return 'Unclassified';
+  } 
+}
+
+function getAllSelectGroups() {
+  return ['Areas', 'Bosses', 'Dungeons', 'Warp Songs', 'Misc.', 'Unclassified'].map(i => {
+    return {
+      group: i,
+    }
+  });
 }
 
 function createZone(zoneName, destination = '', prereqs = []) {
@@ -130,23 +171,33 @@ function generateCurrentLocationSelectData(state) {
   return state.map(n => {
     return {
       id: n.id,
-      label: n.id
+      label: n.id,
+      group: getSelectGroup(n.id)
     };
   });
 }
 
-function generateZoneSelectData(zone) {
-  var firstOption = {
-    id: zone.id,
-    label: zone.destination
-  };
+function generateMasterSelectData() {
+  var array = [];
+  for (var key of Object.keys(allKeys)) {
+    array.push({
+      id: allKeys[key], 
+      label: allKeys[key],
+      group: getSelectGroup(allKeys[key])
+    });
+  }
+  return array;
+}
 
-  var zoneData = [firstOption].concat(Object.keys(zoneKeys).map(k => {
+function generateZoneSelectData(zone) {
+  var zoneData = Object.keys(zoneKeys).map(k => {
     return {
       id: zoneKeys[k],
-      label: zoneKeys[k]
+      label: zoneKeys[k],
+      group: getSelectGroup(zoneKeys[k])
     }
-  }));
+  });
+
   return zoneData;
 }
 
@@ -293,6 +344,10 @@ var mapState = [
   generateNode(allKeys.tot, [
     createZone(allKeys.market),
 	  createZone('Master Sword'),
+  ]),
+  generateNode(allKeys.tot_between, [
+    createZone(allKeys.market),
+	  createZone(allKeys.tot),
   ]),
   generateNode(allKeys.castle_front, [
     createZone(allKeys.market),
@@ -530,19 +585,24 @@ function buildZoneInputs(zones) {
       valueField: 'id',
       labelField: 'label',
       searchField: 'label',
+      optgroupField: 'group',
+      optgroupLabelField: 'group',
+      optgroupValueField: 'group',
+      optgroups: getAllSelectGroups(),
       options: generateZoneSelectData(z),
       zoneId: z.id,
       placeholder: z.destination,
+      hideSelected: true,
       onChange: function (e) {
         var newDestination = e;
         // ZoneId is the same as the label text
         var zoneId = this.settings.zoneId;
+        setDestination(currentNodeId, zoneId, newDestination);
+
         if (!Object.values(zoneKeys).includes(newDestination) || 
             !getNode(mapState, newDestination)) {
           return;
         }
-  
-        setDestination(currentNodeId, zoneId, newDestination);
         // Auto navigate to new section
         var currentLocationSelect = $('.current-location-select')[0].selectize;
         currentLocationSelect.setValue(newDestination);
@@ -563,13 +623,24 @@ $(document).ready(function () {
     valueField: 'id',
     labelField: 'label',
     searchField: 'label',
+    optgroupField: 'group',
+    optgroupLabelField: 'group',
+    optgroupValueField: 'group',
+    optgroups: getAllSelectGroups(),
     options: generateCurrentLocationSelectData(mapState),
     onChange: (id) => {
+      if (!id) {
+        return;
+      }
       currentNodeId = id;
       // Purge old stuff first
       $('.zone-target').empty();
       var node = getNode(mapState, currentNodeId);
       buildZoneInputs(node.zones);
+    },
+    onOpen: (e) => {
+      console.log(e);
+      console.log(this);
     }
   });
 
@@ -578,7 +649,11 @@ $(document).ready(function () {
     valueField: 'id',
     labelField: 'label',
     searchField: 'label',
-    options: generateCurrentLocationSelectData(mapState),
+    optgroupField: 'group',
+    optgroupLabelField: 'group',
+    optgroupValueField: 'group',
+    optgroups: getAllSelectGroups(),
+    options: generateMasterSelectData(),
   });
 
   var $pathEndSelect = $('.path-finder-end');
@@ -586,7 +661,11 @@ $(document).ready(function () {
     valueField: 'id',
     labelField: 'label',
     searchField: 'label',
-    options: generateCurrentLocationSelectData(mapState),
+    optgroupField: 'group',
+    optgroupLabelField: 'group',
+    optgroupValueField: 'group',
+    optgroups: getAllSelectGroups(),
+    options: generateMasterSelectData(),
   });
 });
 

@@ -51,7 +51,7 @@ function resolvePathResult(response) {
             return d;
         }
 
-        return `${d} use ${zoneNameList[index]}`;
+        return `${d} => ${zoneNameList[index]}`;
     });
 
     var orderedList = newArray.map(i => {
