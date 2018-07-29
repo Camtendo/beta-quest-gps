@@ -32,7 +32,7 @@ var areas = {
   stage: 'Lost Woods Forest Stage',
   zelda: "Princess Zelda",
   tot_between: "Between Temple of Time",
-  
+  saria_bridge: "Lost Woods Bridge (Saria)"
 };
 
 var miscAreas = {
@@ -222,6 +222,7 @@ function setDestination(nodeId, zoneId, destination) {
   var zone = getZone(node, zoneId);
   zone.destination = destination;
 
+  console.log(`${nodeId} via ${zoneId} leads to ${destination}`);
   $('.map-percentage-target').text(`Map seen: ${(100 * getMapSeenPercentage()).toFixed(2)}%`);
 }
 
@@ -237,17 +238,18 @@ var mapState = [
     createZone(allKeys.kok),
     createZone(allKeys.gv),
     createZone(allKeys.llr),
-    createZone(generateGrottoName('hp10r')),
+    createZone(generateGrottoName('Heart Piece for 10 Rupees')),
     createZone(generateGrottoName(allKeys.lake)),
-    createZone(generateGrottoName('hp_water')),
+    createZone(generateGrottoName('Heart Piece Underwater')),
     createZone(generateGrottoName(allKeys.kok)),
     createZone(generateGrottoName(allKeys.market)),
-    createZone(generateGrottoName('river')),
+    createZone(generateGrottoName('River')),
     createZone(generateGrottoName(allKeys.gv)),
     createZone(generateGrottoName(allKeys.kak))
   ]),
   generateNode(allKeys.market, [
     createZone(allKeys.bridge),
+    createZone('Shooting Gallery'),
     createZone('Alley Left'),
     createZone('Bombchu Bowling'),
     createZone('Alley Right'),
@@ -259,21 +261,22 @@ var mapState = [
     createZone('Treasure Game')
   ]),
   generateNode(allKeys.kak, [
-    createZone('shop_left'),
-    createZone('shop_right'),
+    createZone('Left Shop (by Death Mountain Trail)'),
+    createZone('Right Shop (by Death Mountain Trail)'),
     createZone('House: Talon'),
     createZone(allKeys.grave),
     createZone('House: Impa'),
     createZone('House: Skulltulla'),
     createZone('Windmill'),
     createZone(generateGrottoName('Redead')),
-    createZone(generateGrottoName('Potion')),
-    createZone('cowjail'),
+    createZone(generateGrottoName('Potion Shop')),
+    createZone('Cow Jail'),
     createZone(allKeys.dmt),
-    createZone('shop_back'),
-    createZone('shop_potion'),
+    createZone('Shop back'),
+    createZone('Potion Shop'),
     createZone(allKeys.field),
     createZone(allKeys.botw),
+    createZone('Shooting Gallery')
   ]),
   generateNode(allKeys.kok, [
     createZone('Shop'),
@@ -300,7 +303,7 @@ var mapState = [
     createZone('1f_right_K'),
     createZone('3f_solo_L'),
     createZone('2f_far_left_M'),
-    createZone('jail_top'),
+    createZone('Jail Top'),
     createZone(allKeys.gv),
     createZone(allKeys.hw),
     createZone(allKeys.gtg),
@@ -311,9 +314,9 @@ var mapState = [
     createZone(allKeys.gf),
     createZone(allKeys.lake),
     createZone(allKeys.field),
-    createZone(generateGrottoName('tent')),
-    createZone(generateGrottoName('rock')),
-    createZone('tent'),
+    createZone(generateGrottoName('Carpenter Tent')),
+    createZone(generateGrottoName('Rock')),
+    createZone('Tent'),
   ]),
   generateNode(allKeys.llr, [
     createZone(allKeys.field),
@@ -327,17 +330,17 @@ var mapState = [
   ]),
   generateNode(allKeys.lake, [
     createZone(allKeys.field),
-    createZone('fishing'),
-    createZone('owl_ride'),
+    createZone('Fishing Pond'),
+    createZone('Owl'),
     createZone(allKeys.zd),
     createZone(allKeys.field),
     createZone(allKeys.water),
-    createZone('Laboratory'),
-    createZone('pull grave'),
+    createZone('Lakeside Laboratory'),
+    createZone('Grave hole'),
   ]),
   generateNode(allKeys.gc, [
     createZone(allKeys.dmt),
-    createZone('shop'),
+    createZone('Shop'),
     createZone(allKeys.lw),
     createZone(generateGrottoName(allKeys.gc)),
     createZone(allKeys.dmc),
@@ -354,11 +357,12 @@ var mapState = [
   generateNode(allKeys.bridge, [
     createZone(allKeys.market),
     createZone(allKeys.field),
-    createZone('door'),
+    createZone('Door'),
   ]),
   generateNode(allKeys.hw, [
     createZone(allKeys.col),
-	  createZone(allKeys.gf),
+    createZone(allKeys.gf),
+    createZone('Quicksand')
   ]),
   generateNode(allKeys.tot, [
     createZone(allKeys.market),
@@ -368,13 +372,17 @@ var mapState = [
     createZone(allKeys.market),
 	  createZone(allKeys.tot),
   ]),
+  generateNode(allKeys.saria_bridge, [
+    createZone('Hyrule Field (gossip stone left)'),
+	  createZone('Kokiri Forest (gossip stone right)'),
+  ]),
   generateNode(allKeys.castle_front, [
     createZone(allKeys.market),
-    createZone('castle_child'),
-    createZone('castle_ganon'),
+    createZone('Inside Castle (child crawlhole)'),
+    createZone('Inside Castle (Ganon entrance)'),
     createZone(generateGrottoName(allKeys.castle_front)),
-    createZone('din'),
-    createZone('caught_guard'),
+    createZone('Din'),
+    createZone('caught'),
     createZone('Double Defense Fairy'),
   ]),
   generateNode(allKeys.castle, [
@@ -390,7 +398,7 @@ var mapState = [
     createZone(allKeys.hw),
     createZone('Nayru'),
     createZone(generateGrottoName(allKeys.col)),
-    createZone('mirror_shield'),
+    createZone('Mirror Shield'),
     createZone(requirements.silvergauntlets),
   ]),
   generateNode(allKeys.alley, [
@@ -402,10 +410,10 @@ var mapState = [
   ]),
   generateNode(allKeys.grave, [
     createZone(allKeys.dampe),
-    createZone('house_dampe'),
-    createZone('sun_song'),
-    createZone('grave_heart_piece'),
-    createZone('grave_shield'),
+    createZone('House: Dampe'),
+    createZone('Royal Family Tomb (Sun Song)'),
+    createZone('Grave: Heart Piece (Redead)'),
+    createZone('Grave: Shield'),
     createZone(allKeys.shadow),
     createZone(allKeys.kak),
   ]),
@@ -413,20 +421,20 @@ var mapState = [
     createZone(allKeys.forest),
     createZone(generateGrottoName('Fairy Fountain')),
     createZone(allKeys.lw),
-    createZone(generateGrottoName('wolf')),
-    createZone(generateGrottoName('saria')),
+    createZone(generateGrottoName('Wolf')),
+    createZone(generateGrottoName('Saria')),
   ]),
   generateNode(allKeys.trial, [
     createZone(allKeys.gt),
 	  createZone(allKeys.castle_front),
   ]),
   generateNode(allKeys.zr, [
-    createZone('field_water'),
-    createZone('field_land'),
+    createZone('Field via water'),
+    createZone('Field via land'),
     createZone(allKeys.zd),
     createZone(generateGrottoName(allKeys.field)),
-    createZone(generateGrottoName('top_rock')),
-    createZone(generateGrottoName('top_no_rock')),
+    createZone(generateGrottoName('Top Rock')),
+    createZone(generateGrottoName('Top No Rock')),
     createZone(allKeys.lw),
   ]),
   generateNode(allKeys.zf, [
@@ -436,7 +444,7 @@ var mapState = [
     createZone(allKeys.jabu),
   ]),
   generateNode(allKeys.zd, [
-    createZone('shop'),
+    createZone('Shop'),
     createZone(allKeys.zf),
     createZone(allKeys.zr),
     createZone(allKeys.lake),
@@ -446,17 +454,17 @@ var mapState = [
     createZone(allKeys.gc),
     createZone(allKeys.fire),
     createZone(allKeys.dmt),
-    createZone('great_fairy'),
+    createZone('Great Fairy'),
     createZone(generateGrottoName(allKeys.dmt)),
-    createZone(generateGrottoName('bridge')),
+    createZone(generateGrottoName('Bridge')),
   ]),
   generateNode(allKeys.dmt, [
     createZone(allKeys.dmc),
     createZone(allKeys.dc),
-    createZone('great_fairy'),
+    createZone('Great Fairy'),
     createZone(allKeys.gc),
     createZone(allKeys.kak),
-    createZone(generateGrottoName('cow')),
+    createZone(generateGrottoName('Cow')),
     createZone(generateGrottoName(allKeys.gc)),
   ]),
   generateNode(allKeys.thieves, [
@@ -473,6 +481,7 @@ var mapState = [
     createZone('two_torch_blue_carpenter_low'),
     createZone('four_torch_yellow_carpenter_jail_right_north'),
     createZone('four_torch_yellow_carpenter_jail_right_south'),
+    createZone('caught'),
   ]),
   generateNode(allKeys.collapse, [
     createZone('top_door_A'),
@@ -534,8 +543,8 @@ var mapState = [
   generateNode(allKeys.spirit, [
     createZone(allKeys.twinrova),
     createZone(allKeys.col),
-    createZone('col_silver_gauntlets'),
-    createZone('col_mirror'),
+    createZone('To Silver Gauntlets'),
+    createZone('To Mirror Shield'),
     createZone(allKeys.save),
   ]),
   generateNode(allKeys.ic, [
@@ -557,28 +566,36 @@ var mapState = [
   ]),
   generateNode(allKeys.gohma, [
     createZone(allKeys.deku),
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.kok),
   ]),
   generateNode(allKeys.kd, [
     createZone(allKeys.dc),
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.dmt),
   ]),
   generateNode(allKeys.barinade, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.zf),
   ]),
   generateNode(allKeys.phantom, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.sfm),
   ]),
   generateNode(allKeys.volvagia, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.dmc),
   ]),
   generateNode(allKeys.morpha, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.lake),
   ]),
   generateNode(allKeys.bongo, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.grave),
   ]),
   generateNode(allKeys.twinrova, [
+    createZone(allKeys.save),
 	  createZone(allKeys.warp, allKeys.col),
   ]),
   generateNode(allKeys.warp_songs, [
@@ -594,8 +611,12 @@ var mapState = [
 function buildZoneInputs(zones) {
   var $zoneTarget = $('.zone-target');
 
+  zones = zones.sort((a, b) => {
+    return a.id.localeCompare(b.id);
+  });
+
   zones.forEach((z, index) => {
-    var zoneContainer = $('<div class="zone-container col-sm-3"></div>');
+    var zoneContainer = $('<div class="zone-container col-sm-2"></div>');
     var zoneLabel = $(`<label for=${index*10}>${z.id}</div>`);
     var newSelect = $(`<select id=${index*10} data-zoneId=${z.id} class="zone-select ${z.id}"></select>`);
     zoneContainer.append(zoneLabel, newSelect);
