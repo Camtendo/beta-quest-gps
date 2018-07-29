@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Camtendo/beta-quest-gps#readme",
   "dependencies": {
     "express": "^4.16.3",
-    "node-dijkstra": "^2.5.0"
+    "node-dijkstra": "^2.5.0",
+    "serve-favicon": "^2.5.0"
   }
 }

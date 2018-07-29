@@ -2,12 +2,14 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
 const Graph = require('node-dijkstra');
 
 var port = process.env.PORT || 8080;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 
 console.log(`Starting Beta Quest GPS on port ${port}...`);
 
