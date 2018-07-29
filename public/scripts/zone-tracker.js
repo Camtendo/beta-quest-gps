@@ -201,12 +201,31 @@ function generateZoneSelectData(zone) {
   return zoneData;
 }
 
+function getMapSeenPercentage() {
+  var seen = 0;
+  var total = 0;
+
+  for (node of mapState) {
+    for (zone of node.zones) {
+      if (zone.destination) {
+        seen++;
+      }
+      total++;
+    }
+  }
+
+  return seen/total;
+}
+
 function setDestination(nodeId, zoneId, destination) {
   var node = getNode(mapState, nodeId);
   var zone = getZone(node, zoneId);
   zone.destination = destination;
+
+  $('.map-percentage-target').text(`Map seen: ${(100 * getMapSeenPercentage()).toFixed(2)}%`);
 }
 
+var mapPercentage = 0;
 // All known entrances
 var mapState = [
   generateNode(allKeys.field, [
