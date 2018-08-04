@@ -18,15 +18,16 @@ app.get('/', function(req, res) {
 });
 
 app.post('/path-finder', function(req, res) {
-console.log('Path finder requested');
-var mapState = req.body.mapState;
-var graph = new Graph(mapState);
-var start = req.body.source;
-var end = req.body.destination;
-console.log(`Computing ${start} to ${end}`);
-var computedPath = graph.path(start, end);
-console.log(computedPath);
-res.json(computedPath);
+    console.log('Path finder requested');
+    var mapState = req.body.mapState;
+    var graph = new Graph(mapState);
+    var start = req.body.source;
+    var end = req.body.destination;
+    console.log(mapState);
+    console.log(`Computing ${start} to ${end}`);
+    var computedPath = graph.path(start, end);
+    console.log(computedPath);
+    res.json(computedPath);
 });
 
 app.listen(port);

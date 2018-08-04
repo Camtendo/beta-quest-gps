@@ -1,11 +1,16 @@
+var restrictedZones = [allKeys.collapse, allKeys.thieves, allKeys.gf];
+
 $('.path-finder-btn').click(() => {
     var transformedState = {};
     for (let node of mapState) {
         var transformedZones = {};
         for (let zone of node.zones) {
             if (zone.destination) {
-                // TODO Perform logic for weighting here
-                transformedZones[zone.destination] = 1;
+                if (restrictedZones.indexOf(zone.destination) !== -1) {
+                    transformedZones[zone.destination] = 6;
+                } else {
+                    transformedZones[zone.destination] = 1;
+                }
             }
         }
 

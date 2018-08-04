@@ -85,12 +85,20 @@ var requirements = {
   lullaby: "Zelda's Lullaby",
   saria: "Saria's Song",
   hookshot: 'Hookshot',
+  bracelet: 'Goron Bracelet',
   silvergauntlets: 'Silver Gauntlets',
   goldgauntlets: 'Gold Gauntlets',
+  hammer: 'Megaton Hammer',
   sos: 'Song of Storms',
+  time: 'Song of Time',
   din: "Din's Fire",
   day: 'Daytime',
-  night: 'Nighttime'
+  night: 'Nighttime',
+  forest_medallion: 'Forest Medallion',
+  fire_medallion: 'Fire Medallion',
+  water_medallion: 'Water Medallion',
+  shadow_medallion: 'Shadow Medallion',
+  spirit_medallion: 'Spirit Medallion',
 };
 
 var allKeys = { ...areas, ...miscAreas, ...warpSongs, ...bosses, ...dungeons, ...requirements };
@@ -136,7 +144,7 @@ function getAllSelectGroups() {
   });
 }
 
-function createZone(zoneName, destination = '', prereqs = []) {
+function createZone(zoneName, prereqs = [], destination = '') {
   return {
     id: zoneName,
     destination: destination || '',
@@ -238,37 +246,37 @@ var mapState = [
     createZone(allKeys.kok),
     createZone(allKeys.gv),
     createZone(allKeys.llr),
-    createZone(generateGrottoName('Heart Piece for 10 Rupees')),
+    createZone(generateGrottoName('Heart Piece for 10 Rupees, Hylia Tree'), [requirements.bombs]),
     createZone(generateGrottoName(allKeys.lake)),
-    createZone(generateGrottoName('Heart Piece Underwater')),
-    createZone(generateGrottoName(allKeys.kok)),
-    createZone(generateGrottoName(allKeys.market)),
-    createZone(generateGrottoName('River')),
-    createZone(generateGrottoName(allKeys.gv)),
-    createZone(generateGrottoName(allKeys.kak))
+    createZone(generateGrottoName('Heart Piece Underwater'), [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.kok), [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.market), [requirements.bombs]),
+    createZone(generateGrottoName('River'), [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.gv), [requirements.bombs, requirements.hammer]),
+    createZone(generateGrottoName(allKeys.kak), [requirements.bombs])
   ]),
   generateNode(allKeys.market, [
     createZone(allKeys.bridge),
-    createZone('Shooting Gallery'),
-    createZone('Alley Left'),
-    createZone('Bombchu Bowling'),
-    createZone('Alley Right'),
-    createZone('Happy Mask Shop'),
-    createZone('Potion Shop'),
-    createZone('Bazaar'),
+    createZone('Shooting Gallery', [requirements.child, requirements.day]),
+    createZone('Alley Left', [requirements.child]),
+    createZone('Bombchu Bowling', [requirements.child]),
+    createZone('Alley Right', [requirements.child]),
+    createZone('Happy Mask Shop', [requirements.child, requirements.day]),
+    createZone('Potion Shop', [requirements.child, requirements.day]),
+    createZone('Bazaar', [requirements.child, requirements.day]),
     createZone(allKeys.castle_front),
     createZone(allKeys.tot),
-    createZone('Treasure Game')
+    createZone('Treasure Game', [requirements.child, requirements.night])
   ]),
   generateNode(allKeys.kak, [
-    createZone('Left Shop (by Death Mountain Trail)'),
+    createZone('Left Shop (by Death Mountain Trail)', [requirements.adult]),
     createZone('Right Shop (by Death Mountain Trail)'),
     createZone('House: Talon'),
     createZone(allKeys.grave),
     createZone('House: Impa'),
     createZone('House: Skulltulla'),
     createZone('Windmill'),
-    createZone(generateGrottoName('Redead')),
+    createZone(generateGrottoName('Redead'), [requirements.bombs]),
     createZone(generateGrottoName('Potion Shop')),
     createZone('Cow Jail'),
     createZone(allKeys.dmt),
@@ -276,7 +284,7 @@ var mapState = [
     createZone('Potion Shop'),
     createZone(allKeys.field),
     createZone(allKeys.botw),
-    createZone('Shooting Gallery')
+    createZone('Shooting Gallery', [requirements.adult])
   ]),
   generateNode(allKeys.kok, [
     createZone('Shop'),
@@ -287,7 +295,7 @@ var mapState = [
     createZone('House: Know it all Bros'),
     createZone(allKeys.lw),
     createZone(allKeys.field),
-    createZone(generateGrottoName(allKeys.kok)),
+    createZone(generateGrottoName(allKeys.kok), [requirements.sos]),
     createZone(allKeys.deku),
   ]),
   generateNode(allKeys.gf, [
@@ -307,16 +315,17 @@ var mapState = [
     createZone(allKeys.gv),
     createZone(allKeys.hw),
     createZone(allKeys.gtg),
-    createZone(generateGrottoName(allKeys.gf)),
+    createZone(generateGrottoName(allKeys.gf), [requirements.sos]),
     createZone('caught'),
   ]),
   generateNode(allKeys.gv, [
     createZone(allKeys.gf),
     createZone(allKeys.lake),
     createZone(allKeys.field),
-    createZone(generateGrottoName('Carpenter Tent')),
-    createZone(generateGrottoName('Rock')),
-    createZone('Tent'),
+    createZone(generateGrottoName('Carpenter Tent'),  [requirements.sos]),
+    createZone(generateGrottoName('Rock'),  [requirements.goldgauntlets]),
+    createZone('Tent',  [requirements.adult]),
+    createZone('caught',  [requirements.child]),
   ]),
   generateNode(allKeys.llr, [
     createZone(allKeys.field),
@@ -331,9 +340,8 @@ var mapState = [
   generateNode(allKeys.lake, [
     createZone(allKeys.field),
     createZone('Fishing Pond'),
-    createZone('Owl'),
+    createZone('Owl',  [requirements.child]),
     createZone(allKeys.zd),
-    createZone(allKeys.field),
     createZone(allKeys.water),
     createZone('Lakeside Laboratory'),
     createZone('Grave hole'),
@@ -342,8 +350,8 @@ var mapState = [
     createZone(allKeys.dmt),
     createZone('Shop'),
     createZone(allKeys.lw),
-    createZone(generateGrottoName(allKeys.gc)),
-    createZone(allKeys.dmc),
+    createZone(generateGrottoName(allKeys.gc), [requirements.time]),
+    createZone(allKeys.dmc, [requirements.adult]),
   ]),
   generateNode(allKeys.lw, [
     createZone(allKeys.gc),
@@ -351,8 +359,8 @@ var mapState = [
     createZone('Forest Stage Grotto'),
     createZone(allKeys.sfm),
     createZone(allKeys.zr),
-    createZone(generateGrottoName(allKeys.gc)),
-    createZone(generateGrottoName(allKeys.sfm)),
+    createZone(generateGrottoName(allKeys.gc), [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.sfm), [requirements.bombs]),
   ]),
   generateNode(allKeys.bridge, [
     createZone(allKeys.market),
@@ -378,12 +386,12 @@ var mapState = [
   ]),
   generateNode(allKeys.castle_front, [
     createZone(allKeys.market),
-    createZone('Inside Castle (child crawlhole)'),
-    createZone('Inside Castle (Ganon entrance)'),
-    createZone(generateGrottoName(allKeys.castle_front)),
-    createZone('Din'),
-    createZone('caught'),
-    createZone('Double Defense Fairy'),
+    createZone('Inside Castle (child crawlhole)', [requirements.child]),
+    createZone('Inside Castle (Ganon entrance)', [requirements.adult, requirements.shadow_medallion, requirements.spirit_medallion]),
+    createZone(generateGrottoName(allKeys.castle_front), [requirements.child, requirements.sos]),
+    createZone('Din', [requirements.child, requirements.bombs]),
+    createZone('caught', [requirements.child]),
+    createZone('Double Defense Fairy', [requirements.adult, requirements.goldgauntlets]),
   ]),
   generateNode(allKeys.castle, [
     createZone(allKeys.zelda),
@@ -396,8 +404,8 @@ var mapState = [
   generateNode(allKeys.col, [
     createZone(allKeys.spirit),
     createZone(allKeys.hw),
-    createZone('Nayru'),
-    createZone(generateGrottoName(allKeys.col)),
+    createZone('Nayru', [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.col), [requirements.goldgauntlets]),
     createZone('Mirror Shield'),
     createZone(requirements.silvergauntlets),
   ]),
@@ -405,67 +413,68 @@ var mapState = [
     createZone('market_left'),
     createZone('door_left_up'),
     createZone('market_right'),
-    createZone('door_left_left'),
-    createZone('door_right'),
+    createZone('door_left_left', [requirements.night]),
+    createZone('door_right', [requirements.night]),
   ]),
   generateNode(allKeys.grave, [
     createZone(allKeys.dampe),
     createZone('House: Dampe'),
-    createZone('Royal Family Tomb (Sun Song)'),
+    createZone('Royal Family Tomb (Sun Song)', [requirements.lullaby]),
     createZone('Grave: Heart Piece (Redead)'),
     createZone('Grave: Shield'),
-    createZone(allKeys.shadow),
+    createZone(allKeys.shadow, [requirements.din]),
     createZone(allKeys.kak),
   ]),
   generateNode(allKeys.sfm, [
     createZone(allKeys.forest),
     createZone(generateGrottoName('Fairy Fountain')),
     createZone(allKeys.lw),
-    createZone(generateGrottoName('Wolf')),
-    createZone(generateGrottoName('Saria')),
+    createZone(generateGrottoName('Wolf'), [requirements.bombs]),
+    createZone(generateGrottoName('Saria'), [requirements.sos]),
   ]),
   generateNode(allKeys.trial, [
     createZone(allKeys.gt),
-	  createZone(allKeys.castle_front),
+    createZone(allKeys.castle_front),
+    createZone(allKeys.save),
   ]),
   generateNode(allKeys.zr, [
     createZone('Field via water'),
     createZone('Field via land'),
     createZone(allKeys.zd),
     createZone(generateGrottoName(allKeys.field)),
-    createZone(generateGrottoName('Top Rock')),
+    createZone(generateGrottoName('Top Rock'), [requirements.bombs]),
     createZone(generateGrottoName('Top No Rock')),
     createZone(allKeys.lw),
   ]),
   generateNode(allKeys.zf, [
     createZone(allKeys.zd),
-    createZone(allKeys.ic),
-    createZone('Farore'),
-    createZone(allKeys.jabu),
+    createZone(allKeys.ic, [requirements.adult]),
+    createZone('Farore', [requirements.bombs]),
+    createZone(allKeys.jabu, [requirements.child]),
   ]),
   generateNode(allKeys.zd, [
     createZone('Shop'),
     createZone(allKeys.zf),
     createZone(allKeys.zr),
-    createZone(allKeys.lake),
+    createZone(allKeys.lake, [requirements.child, requirements.silverscale]),
     createZone(generateGrottoName(allKeys.zd)),
   ]),
   generateNode(allKeys.dmc, [
     createZone(allKeys.gc),
     createZone(allKeys.fire),
     createZone(allKeys.dmt),
-    createZone('Great Fairy'),
-    createZone(generateGrottoName(allKeys.dmt)),
-    createZone(generateGrottoName('Bridge')),
+    createZone('Great Fairy', [requirements.hammer]),
+    createZone(generateGrottoName(allKeys.dmt), [requirements.bombs]),
+    createZone(generateGrottoName('Bridge'), [requirements.hammer]),
   ]),
   generateNode(allKeys.dmt, [
     createZone(allKeys.dmc),
-    createZone(allKeys.dc),
-    createZone('Great Fairy'),
+    createZone(allKeys.dc, [requirements.bombs, requirements.bracelet]),
+    createZone('Great Fairy', [requirements.bombs]),
     createZone(allKeys.gc),
     createZone(allKeys.kak),
-    createZone(generateGrottoName('Cow')),
-    createZone(generateGrottoName(allKeys.gc)),
+    createZone(generateGrottoName('Cow'), [requirements.bombs]),
+    createZone(generateGrottoName(allKeys.gc), [requirements.sos]),
   ]),
   generateNode(allKeys.thieves, [
     createZone('hookshot_ramp_room_top'),
@@ -484,22 +493,22 @@ var mapState = [
     createZone('caught'),
   ]),
   generateNode(allKeys.collapse, [
-    createZone('top_door_A'),
-    createZone('ganondorf_arena_entrance_A'),
-    createZone('ganandorf_arena_exit_B'),
-    createZone('gap_no_climb_top_B'),
-    createZone('gap_no_climb_bottom_C'),
-    createZone('lots_rocks_C'),
-    createZone('lots_rocks_D'),
-    createZone('normal_spiral_top_D'),
-    createZone('normal_spiral_top_E'),
-    createZone('stalfos_entrance_E'),
-    createZone('stalfos_exit_F'),
-    createZone('climb_gap_top_F'),
-    createZone('climb_gap_bottom_G'),
-    createZone('stairs_entrance_G'),
-    createZone('stairs_exit_H'),
-    createZone('end_of_game_I', allKeys.ganon)
+    createZone('A_top_door_A'),
+    createZone('A_ganondorf_arena_entrance_A'),
+    createZone('B_ganandorf_arena_exit_B'),
+    createZone('B_gap_no_climb_top_B'),
+    createZone('C_gap_no_climb_bottom_C'),
+    createZone('C_lots_rocks_C'),
+    createZone('D_lots_rocks_D'),
+    createZone('D_normal_spiral_top_D'),
+    createZone('E_normal_spiral_bottom_E'),
+    createZone('E_stalfos_entrance_E'),
+    createZone('F_stalfos_exit_F'),
+    createZone('F_climb_gap_top_F'),
+    createZone('G_climb_gap_bottom_G'),
+    createZone('G_stairs_entrance_G'),
+    createZone('H_stairs_exit_H'),
+    createZone('I_end_of_game_I', allKeys.ganon)
   ]),
   generateNode(allKeys.dampe, [
     createZone(allKeys.kak),
@@ -567,44 +576,44 @@ var mapState = [
   generateNode(allKeys.gohma, [
     createZone(allKeys.deku),
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.kok),
+	  createZone(allKeys.warp, [], allKeys.kok),
   ]),
   generateNode(allKeys.kd, [
     createZone(allKeys.dc),
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.dmt),
+	  createZone(allKeys.warp, [], allKeys.dmt),
   ]),
   generateNode(allKeys.barinade, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.zf),
+	  createZone(allKeys.warp, [], allKeys.zf),
   ]),
   generateNode(allKeys.phantom, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.sfm),
+	  createZone(allKeys.warp, [], allKeys.sfm),
   ]),
   generateNode(allKeys.volvagia, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.dmc),
+	  createZone(allKeys.warp, [], allKeys.dmc),
   ]),
   generateNode(allKeys.morpha, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.lake),
+	  createZone(allKeys.warp, [], allKeys.lake),
   ]),
   generateNode(allKeys.bongo, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.grave),
+	  createZone(allKeys.warp, [], allKeys.grave),
   ]),
   generateNode(allKeys.twinrova, [
     createZone(allKeys.save),
-	  createZone(allKeys.warp, allKeys.col),
+	  createZone(allKeys.warp, [], allKeys.col),
   ]),
   generateNode(allKeys.warp_songs, [
     createZone(allKeys.minuet),
     createZone(allKeys.bolero),
     createZone(allKeys.serenade),
-    createZone(allKeys.nocturne),
+    createZone(allKeys.nocturne, [requirements.forest_medallion, requirements.fire_medallion, requirements.water_medallion]),
     createZone(allKeys.requiem),
-    createZone(allKeys.prelude),
+    createZone(allKeys.prelude, [requirements.forest_medallion]),
   ]),
 ];
 
@@ -617,9 +626,10 @@ function buildZoneInputs(zones) {
 
   zones.forEach((z, index) => {
     var zoneContainer = $('<div class="zone-container col-sm-2"></div>');
-    var zoneLabel = $(`<label for=${index*10}>${z.id}</div>`);
+    var zoneLabel = !z.destination ? $(`<label for=${index*10}>${z.id}</label>`) : $(`<a href="#">${z.id}</a>`);
+    var reqElement = z.prereqs.length ? $(`<div class="zone-requirements">Requires: ${z.prereqs.join(', ')}</div>`) : null;
     var newSelect = $(`<select id=${index*10} data-zoneId=${z.id} class="zone-select ${z.id}"></select>`);
-    zoneContainer.append(zoneLabel, newSelect);
+    zoneContainer.append(zoneLabel, reqElement, newSelect);
     $zoneTarget.append(zoneContainer);
     newSelect.selectize( {
       valueField: 'id',
@@ -652,6 +662,25 @@ function buildZoneInputs(zones) {
         buildZoneInputs(node.zones);
       }
     });
+  });
+
+  $('a').click((e) => {
+    var zoneId = $(e.target).text();
+    var node = getNode(mapState, currentNodeId);
+    var zone = getZone(node, zoneId);
+    var newDestination = zone.destination;
+
+    if (!Object.values(zoneKeys).includes(newDestination) || 
+        !getNode(mapState, newDestination)) {
+      return;
+    }
+    // Auto navigate to new section
+    var currentLocationSelect = $('.current-location-select')[0].selectize;
+    currentLocationSelect.setValue(newDestination);
+    currentNodeId = newDestination;
+    $('.zone-target').empty();
+    var node = getNode(mapState, currentNodeId);
+    buildZoneInputs(node.zones);
   });
 }
 
