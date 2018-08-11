@@ -209,6 +209,78 @@ function generateZoneSelectData(zone) {
   return zoneData;
 }
 
+function getHyruleFieldPercentage() {
+  var mapKeys = [areas.field, areas.llr, areas.lake];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getHyruleCastlePercentage() {
+  var mapKeys = [areas.castle, areas.castle_front, areas.market, areas.zelda, areas.bridge, areas.alley, areas.tot, areas.tot_between];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getGanonPercentage() {
+  var mapKeys = [areas.gt, areas.trial, areas.collapse, bosses.ganondorf];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getKokiriPercentage() {
+  var mapKeys = [areas.kok, dungeons.deku, dungeons.forest, bosses.gohma, bosses.phantom, areas.lw, areas.saria_bridge, areas.sfm];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getKakarikoPercentage() {
+  var mapKeys = [areas.kak, areas.grave, areas.dampe, dungeons.shadow, dungeons.botw, bosses.bongo];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getDeathMountainPercentage() {
+  var mapKeys = [areas.dmt, areas.dmc, areas.gc, dungeons.dc, bosses.kd, dungeons.fire, bosses.volvagia];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getZoraPercentage() {
+  var mapKeys = [areas.zr, areas.zd, areas.zf, dungeons.ic, dungeons.jabu, bosses.barinade, dungeons.water, bosses.morpha];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getGerudoPercentage() {
+  var mapKeys = [areas.gv, areas.gf, areas.thieves, areas.gtg, areas.hw, areas.col, dungeons.spirit, bosses.twinrova];
+
+  var filteredMapState = mapState.filter(n => mapKeys.indexOf(n.id) !== -1);
+  return getSeenPercentage(filteredMapState);
+}
+
+function getSeenPercentage(mapArray) {
+  var seen = 0;
+  var total = 0;
+
+  for (node of mapArray) {
+    for (zone of node.zones) {
+      if (zone.destination) {
+        seen++;
+      }
+      total++;
+    }
+  }
+
+  return seen/total;
+}
+
 function getMapSeenPercentage() {
   var seen = 0;
   var total = 0;
@@ -231,7 +303,15 @@ function setDestination(nodeId, zoneId, destination) {
   zone.destination = destination;
 
   console.log(`${nodeId} via ${zoneId} leads to ${destination}`);
-  $('.map-percentage-target').text(`Map seen: ${(100 * getMapSeenPercentage()).toFixed(2)}%`);
+  $('.hyrule-field-percentage-target').text(`Hyrule Field: ${(100 * getHyruleFieldPercentage()).toFixed(2)}%`);
+  $('.hyrule-castle-percentage-target').text(`Hyrule Castle: ${(100 * getHyruleCastlePercentage()).toFixed(2)}%`);
+  $('.kokiri-percentage-target').text(`Kokiri: ${(100 * getKokiriPercentage()).toFixed(2)}%`);
+  $('.kakariko-percentage-target').text(`Kakariko: ${(100 * getKakarikoPercentage()).toFixed(2)}%`);
+  $('.death-mountain-percentage-target').text(`Death Mountain: ${(100 * getDeathMountainPercentage()).toFixed(2)}%`);
+  $('.zora-percentage-target').text(`Zora: ${(100 * getZoraPercentage()).toFixed(2)}%`);
+  $('.gerudo-percentage-target').text(`Gerudo: ${(100 * getGerudoPercentage()).toFixed(2)}%`);
+  $('.ganon-percentage-target').text(`Ganon: ${(100 * getGanonPercentage()).toFixed(2)}%`);
+  $('.map-percentage-target').text(`Total Map Seen: ${(100 * getMapSeenPercentage()).toFixed(2)}%`);
 }
 
 var mapPercentage = 0;
@@ -508,7 +588,7 @@ var mapState = [
     createZone('G_climb_gap_bottom_G'),
     createZone('G_stairs_entrance_G'),
     createZone('H_stairs_exit_H'),
-    createZone('I_end_of_game_I', allKeys.ganon)
+    createZone('I_end_of_game_I', [], allKeys.ganon)
   ]),
   generateNode(allKeys.dampe, [
     createZone(allKeys.kak),

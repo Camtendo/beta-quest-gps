@@ -21,3 +21,36 @@
 .zone-requirements {
     color: red;
 }
+
+.map-categories-container {
+    width: 50%;
+}
+
+.hyrule-castle-percentage-target {
+    color: darkgoldenrod;
+}
+
+.kokiri-percentage-target {
+    color: green;
+}
+
+.kakariko-percentage-target {
+    color: purple;
+}
+
+.death-mountain-percentage-target {
+    color: red;
+}
+
+.zora-percentage-target {
+    color: blue;
+}
+
+.gerudo-percentage-target {
+    color: orange;
+}
+
+.map-category {
+    font-size: 18px;
+    font-weight: bold;
+}
